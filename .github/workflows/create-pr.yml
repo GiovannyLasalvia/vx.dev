@@ -27,7 +27,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           WHITELIST: ${{ secrets.WHITELIST }}
-          CONFIG: ${{ vars.CONFIG }}
+          CONFIG: ${{ secrets.CONFIG }}
           ACTOR: ${{ github.actor }}
         run: deno run --unstable -A prompts/entry.ts
 
@@ -37,6 +37,9 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add .
           git commit -m "chore: auto-generate UI from issue" || echo "No changes to commit"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}
+          git push origin HEAD
+
           git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}
           git push origin HEAD
 
