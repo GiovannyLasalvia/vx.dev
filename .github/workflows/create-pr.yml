@@ -20,7 +20,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: 1.38.3
+          deno-version: 1.45.2
 
       - name: generate UI
         env:
@@ -29,7 +29,7 @@ jobs:
           WHITELIST: ${{ secrets.WHITELIST }}
           CONFIG: ${{ vars.CONFIG }}
           ACTOR: ${{ github.actor }}
-        run: deno run -A prompts/entry.ts
+        run: deno run --unstable -A prompts/entry.ts
 
       - name: Commit generated files directly
         run: |
@@ -39,5 +39,6 @@ jobs:
           git commit -m "chore: auto-generate UI from issue" || echo "No changes to commit"
           git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}
           git push origin HEAD
+
 
 
