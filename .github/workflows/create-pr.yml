@@ -16,10 +16,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: 1.38.3
+
       - name: generate UI
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -28,3 +30,12 @@ jobs:
           CONFIG: ${{ vars.CONFIG }}
           ACTOR: ${{ github.actor }}
         run: deno run -A prompts/entry.ts
+
+      - name: Commit generated files directly
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git commit -m "chore: auto-generate UI from issue" || echo "No changes to commit"
+          git push origin HEAD
+
