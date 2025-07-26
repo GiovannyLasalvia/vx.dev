@@ -37,5 +37,7 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add .
           git commit -m "chore: auto-generate UI from issue" || echo "No changes to commit"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}
           git push origin HEAD
+
 
